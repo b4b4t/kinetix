@@ -51,6 +51,20 @@ internal class PostgresParameterCollection(IDbCommand command) : SqlParameterCol
         return parameter;
     }
 
+    
+    /// <inheritdoc />
+    public override SqlDataParameter AddInParameter(string parameterName, IEnumerable<DateTime> list)
+    {
+        var parameter = new SqlDataParameter(InnerCommand.CreateParameter())
+        {
+            ParameterName = ParamValue + parameterName,
+            Direction = ParameterDirection.Input,
+            Value = list.ToList(),
+        };
+        Add(parameter);
+        return parameter;
+    }
+
     /// <inheritdoc />
     public override SqlDataParameter AddTableParameter<T>(ICollection<T> collection)
     {

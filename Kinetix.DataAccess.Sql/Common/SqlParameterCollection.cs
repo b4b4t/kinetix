@@ -175,6 +175,15 @@ public abstract class SqlParameterCollection(IDbCommand command) : IDataParamete
     public abstract SqlDataParameter AddInParameter(string parameterName, IEnumerable<Guid> list);
 
     /// <summary>
+    /// Ajoute les paramètres pour une clause IN portant sur des dates.
+    /// </summary>
+    /// <param name="parameterName">Nom du paramètre SQL Server.</param>
+    /// <param name="list">Collection des dates à insérer dans le IN.</param>
+    /// <returns>Le paramètre créé.</returns>
+    /// <remarks>Dans la requête, le corps du IN doit s'écrire de la manière suivante : n in (select * from @parameterName).</remarks>
+    public abstract SqlDataParameter AddInParameter(string parameterName, IEnumerable<DateTime> list);
+
+    /// <summary>
     /// Ajoute une liste de bean en paramètre (La colonne InsertKey est obligatoire).
     /// </summary>
     /// <typeparam name="T">Type du bean.</typeparam>

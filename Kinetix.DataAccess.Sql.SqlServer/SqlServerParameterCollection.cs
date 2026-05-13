@@ -35,6 +35,11 @@ internal class SqlServerParameterCollection(IDbCommand command) : Common.SqlPara
     private const string VarCharDataType = "type_varchar_list";
 
     /// <summary>
+    /// Nom du type SQL Server dédié aux DateTime.
+    /// </summary>
+    private const string DateTimeDataType = "type_datetime_list";
+
+    /// <summary>
     /// Taille du champ du type SQL Server dédié aux varchar.
     /// </summary>
     private const int VarCharLength = 255;
@@ -55,6 +60,12 @@ internal class SqlServerParameterCollection(IDbCommand command) : Common.SqlPara
     public override SqlDataParameter AddInParameter(string parameterName, IEnumerable<Guid> list)
     {
         return AddInParameter(parameterName, list, UniqueIdentifierDataType, SqlDbType.UniqueIdentifier);
+    }
+
+    /// <inheritdoc />
+    public override SqlDataParameter AddInParameter(string parameterName, IEnumerable<DateTime> list)
+    {
+        return AddInParameter(parameterName, list, DateTimeDataType, SqlDbType.DateTime);
     }
 
     /// <inheritdoc />

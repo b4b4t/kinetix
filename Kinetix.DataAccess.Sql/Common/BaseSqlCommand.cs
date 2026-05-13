@@ -209,6 +209,18 @@ public abstract class BaseSqlCommand : IDisposable
     }
 
     /// <summary>
+    /// Ajoute comme paramètre une liste de dates.
+    /// </summary>
+    /// <param name="parameterName">Nom du paramètre.</param>
+    /// <param name="list">Liste de dates.</param>
+    /// <returns>La commande.</returns>
+    public BaseSqlCommand AddInParameter(string parameterName, IEnumerable<DateTime> list)
+    {
+        Parameters.AddInParameter(parameterName, list);
+        return this;
+    }
+
+    /// <summary>
     /// Ajout un nouveau paramètre à partir d'une colonne et de sa valeur.
     /// Le paramètre est un paramètre d'entrée.
     /// </summary>
