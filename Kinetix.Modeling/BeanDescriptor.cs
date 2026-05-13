@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Kinetix.Modeling.Annotations;
 using Kinetix.Modeling.Exceptions;
 
@@ -180,6 +181,7 @@ public static class BeanDescriptor
             var colAttr = (ColumnAttribute?)property.Attributes[typeof(ColumnAttribute)];
             var domainAttr = (DomainAttribute?)property.Attributes[typeof(DomainAttribute)];
             var requiredAttr = (RequiredAttribute?)property.Attributes[typeof(RequiredAttribute)];
+            var dataMemberAttr = (DataMemberAttribute?)property.Attributes[typeof(DataMemberAttribute)];
 
             string? display = null;
             if (displayAttr != null)
@@ -217,6 +219,7 @@ public static class BeanDescriptor
             var referenceType = attr?.ReferenceType;
             var isBrowsable = property.IsBrowsable;
             var isReadonly = property.IsReadOnly;
+            bool isDataMember = dataMemberAttr != null;
 
             var description = new BeanPropertyDescriptor(
                 property.Name,
@@ -229,7 +232,8 @@ public static class BeanDescriptor
                 isRequired,
                 referenceType,
                 isReadonly,
-                isBrowsable
+                isBrowsable,
+                isDataMember
             );
 
             coll.Add(description);

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.Serialization.DataContracts;
 using Kinetix.Modeling.Exceptions;
 
 namespace Kinetix.Modeling;
@@ -25,6 +26,7 @@ public sealed class BeanPropertyDescriptor
     /// <param name="referenceType">Type de la liste de référence associée à la propriété.</param>
     /// <param name="isReadOnly"><code>True</code> si la propriété est en lecture seule, <code>False</code> sinon.</param>
     /// <param name="isBrowsable">Indique si la propriété est affichable.</param>
+    /// <param name="isDataMember">Indique si la propriété est DataMember.</param>
     internal BeanPropertyDescriptor(
         string propertyName,
         string? memberName,
@@ -36,7 +38,8 @@ public sealed class BeanPropertyDescriptor
         bool isRequired,
         Type? referenceType,
         bool isReadOnly,
-        bool isBrowsable
+        bool isBrowsable,
+        bool isDataMember
     )
     {
         PropertyName = propertyName;
@@ -50,6 +53,7 @@ public sealed class BeanPropertyDescriptor
         ReferenceType = referenceType;
         IsReadOnly = isReadOnly;
         IsBrowsable = isBrowsable;
+        IsDataMember = isDataMember;
 
         InitPrimitiveType();
         CheckPropertyTypeForReference();
@@ -124,6 +128,11 @@ public sealed class BeanPropertyDescriptor
     /// Retourne si la propriété est en lecture seule.
     /// </summary>
     public bool IsReadOnly { get; private set; }
+
+    /// <summary>
+    /// Indique si la propriété est DataMember d'un DataContract WCF.
+    /// </summary>
+    public bool IsDataMember { get; private set; }
 
     /// <summary>
     /// Retourne le domaine associé à la propriété.
