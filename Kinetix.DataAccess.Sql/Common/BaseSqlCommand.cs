@@ -405,6 +405,37 @@ public abstract class BaseSqlCommand : IDisposable
     }
 
     /// <summary>
+    /// Exécute une commande de selection et retourne un dataset.
+    /// </summary>
+    /// <returns>DataReader.</returns>
+    public DataSet ExecuteDataSet()
+    {
+        var listener = GetSqlCommandListener();
+        try
+        {
+            CommandParser.ParseCommand(InnerCommand, _parserKey, queryParameter: null);
+            var dataSet = new DataSet();
+            using var reader = InnerCommand.ExecuteReader();
+            while (!reader.IsClosed)
+            {
+                var table = new DataTable();
+                table.Load(reader);
+                dataSet.Tables.Add(table);
+            }
+
+            return dataSet;
+        }
+        catch (DbException sqle)
+        {
+            throw listener.HandleException(sqle);
+        }
+        finally
+        {
+            listener.Dispose();
+        }
+    }
+
+    /// <summary>
     /// Crée un nouveau paramètre pour la commande.
     /// </summary>
     /// <returns>Paramètre.</returns>
