@@ -265,7 +265,7 @@ public class FilterCriteria
     /// <param name="param">Nom du paramètre (champ dans la table).</param>
     /// <param name="exprType">Expression utilisée.</param>
     /// <param name="value">Valeur du critère.</param>
-    internal void AddCriteria(string param, Expression exprType, object? value)
+    public void AddCriteria(string param, Expression exprType, object? value)
     {
         if (string.IsNullOrEmpty(param))
         {
