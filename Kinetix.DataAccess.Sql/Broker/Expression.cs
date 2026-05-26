@@ -69,4 +69,9 @@ public enum Expression
     /// La valeur est différente.
     /// </summary>
     NotEquals,
+
+    /// <summary>
+    /// la valeur est parmi la liste.
+    /// </summary>
+    In,
 }

@@ -1,4 +1,5 @@
-﻿using Kinetix.Services;
+﻿using System.Transactions;
+using Kinetix.Services;
 
 namespace Kinetix.DataAccess.Sql.Broker;
 
@@ -173,6 +174,22 @@ public class StandardBroker<T>(TransactionScopeManager transactionScopeManager, 
         using var tx = transactionScopeManager.EnsureTransaction();
         var result = store.PutAll(values);
         tx.Complete();
+        return result;
+    }
+
+    /// <summary>
+    /// Met à jour l'ensemble des éléments.
+    /// </summary>
+    /// <param name="collection">Valeurs à mettre à jour.</param>
+    /// <returns>Valeurs mises à jour.</returns>
+    public ICollection<T> UpdateAll(ICollection<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+
+        using var tx = transactionScopeManager.EnsureTransaction();
+        var result = store.UpdateAll(collection);
+        tx.Complete();
+
         return result;
     }
 

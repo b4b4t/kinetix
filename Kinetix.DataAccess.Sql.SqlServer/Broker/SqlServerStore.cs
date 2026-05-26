@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Kinetix.DataAccess.Sql.Broker;
 using Kinetix.DataAccess.Sql.Common;
 using Kinetix.Modeling;
@@ -89,5 +90,16 @@ internal class SqlServerStore<T>(string dataSourceName, ConnectionPool connectio
 
         var collectionStore = new SqlServerParameterBeanCollection<T>(ConnectionPool, collection, isInsert: true);
         return collectionStore.ExecuteInsert(commandName, DataSourceName);
+    }
+
+    /// <inheritdoc />
+    protected override ICollection<T> UpdateAll(string commandName, ICollection<T> collection, BeanDefinition beanDefinition)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(beanDefinition);
+
+        var collectionStore = new SqlServerParameterBeanCollection<T>(ConnectionPool, collection, isInsert: false);
+        collectionStore.ExecuteUpdateAll(commandName, DataSourceName);
+        return collection;
     }
 }

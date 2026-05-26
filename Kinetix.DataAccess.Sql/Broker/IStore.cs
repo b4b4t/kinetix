@@ -70,6 +70,13 @@ public interface IStore<T>
     ICollection<T> PutAll(ICollection<T> collection);
 
     /// <summary>
+    /// Met à jour les beans dans le store.
+    /// </summary>
+    /// <param name="collection">Beans à enregistrer.</param>
+    /// <returns>Beans enregistrés.</returns>
+    ICollection<T> UpdateAll(ICollection<T> collection);
+
+    /// <summary>
     /// Supprime un bean du store.
     /// </summary>
     /// <param name="primaryKey">Clef primaire du bean à supprimer.</param>

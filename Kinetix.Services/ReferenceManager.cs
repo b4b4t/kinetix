@@ -230,6 +230,13 @@ public class ReferenceManager(IServiceProvider provider, TimeSpan cacheDuration)
         return GetReferenceValue(GetReferenceObject(predicate));
     }
 
+    /// <inheritdoc cref="IReferenceManager.GetReferenceValue(Type, object)" />
+    public string? GetReferenceValue(Type type, object primaryKey)
+    {
+        var getReferenceValue = typeof(ReferenceManager).GetMethod(nameof(GetReferenceValue), 1, [typeof(object)]);
+        return (string?)getReferenceValue!.MakeGenericMethod(type).Invoke(this, [primaryKey]);
+    }
+
     /// <inheritdoc cref="IReferenceManager.GetReferenceValue(string, object?)" />
     public string? GetReferenceValue(string referenceName, object? primaryKey)
     {
@@ -251,6 +258,14 @@ public class ReferenceManager(IServiceProvider provider, TimeSpan cacheDuration)
     {
         return GetReferenceValue(await GetReferenceObjectAsync(predicate, ct));
     }
+
+    /// <inheritdoc cref="IReferenceManager.GetReferenceValueAsync(Type, object, CancellationToken)" />
+    public async Task<string?> GetReferenceValueAsync(Type type, object primaryKey, CancellationToken ct = default)
+    {
+        var getReferenceValue = typeof(ReferenceManager).GetMethod(nameof(GetReferenceValue), 1, [typeof(object)]);
+        return await getReferenceValue!.MakeGenericMethod(type).InvokeAsync<string>(this, [primaryKey, ct]);
+    }
+
 
     /// <inheritdoc cref="IReferenceManager.GetReferenceValueAsync(string, object?, CancellationToken)" />
     public async Task<string?> GetReferenceValueAsync(

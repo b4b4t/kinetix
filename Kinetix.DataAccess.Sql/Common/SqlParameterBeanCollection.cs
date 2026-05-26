@@ -52,6 +52,11 @@ public abstract class SqlParameterBeanCollection<T>
     protected StringBuilder? SbInsert { get; set; }
 
     /// <summary>
+    /// StringBuilder pour la mise à jour.
+    /// </summary>
+    protected StringBuilder? SbUpdate { get; set; }
+
+    /// <summary>
     /// Crée le paramètre de liste a ajouter à la commande.
     /// </summary>
     /// <param name="command">Commande.</param>
@@ -98,6 +103,22 @@ public abstract class SqlParameterBeanCollection<T>
         }
 
         return Collection;
+    }
+
+    /// <summary>
+    /// Execute la mise à jour ensembliste en base de la collection.
+    /// </summary>
+    /// <param name="commandName"></param>
+    /// <param name="dataSourceName"></param>
+    public void ExecuteUpdateAll(string commandName, string dataSourceName)
+    {
+        if (_connectionPool != null && SbUpdate != null)
+        {
+            var command = _connectionPool.GetSqlCommand(dataSourceName, commandName, SbUpdate.ToString());
+            CreateParameter(command);
+            command.CommandTimeout = 0;
+            command.ExecuteNonQuery();
+        }
     }
 
     /// <summary>

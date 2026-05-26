@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Globalization;
 using System.Text;
@@ -329,6 +330,24 @@ public abstract class SqlStore<T> : IStore<T>
 
         var commandName = ServiceInsert + "_" + Definition.ContractName;
         return InsertAll(commandName, collection, Definition);
+    }
+
+    /// <summary>
+    /// Met à jour les beans dans le store.
+    /// </summary>
+    /// <param name="collection">Beans à enregistrer</param>
+    /// <returns>Beans enregistrés</returns>
+    public ICollection<T> UpdateAll(ICollection<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+
+        if (collection.Count == 0)
+        {
+            return collection;
+        }
+
+        string commandName = ServiceUpdate + "_" + Definition.ContractName;
+        return UpdateAll(commandName, collection, Definition);
     }
 
     /// <summary>
@@ -669,6 +688,15 @@ public abstract class SqlStore<T> : IStore<T>
     );
 
     /// <summary>
+    /// Met à jour les beans dans le store.
+    /// </summary>
+    /// <param name="commandName">Nom du service.</param>
+    /// <param name="collection">Beans à mettre à jour.</param>
+    /// <param name="beanDefinition">Définition.</param>
+    /// <returns></returns>
+    protected abstract ICollection<T> UpdateAll(string commandName, ICollection<T> collection, BeanDefinition beanDefinition);
+
+    /// <summary>
     /// Prépare la chaîne SQL et les paramètres de commandes pour appliquer un FilterCriteria.
     /// </summary>
     /// <param name="filter">Critères de filtrage.</param>
@@ -708,6 +736,13 @@ public abstract class SqlStore<T> : IStore<T>
                 var dateValues = (DateTime[])criteriaParam.Value!;
                 command.AddParameter(parameterName + "T1", dateValues[0]);
                 command.AddParameter(parameterName + "T2", dateValues[1]);
+            }
+            else if (criteriaParam.Expression == Expression.In)
+            {
+                //rien :
+                //la valeur du paramètre est une collection.
+                //Cette collection ne doit pas être ajouter en tant que paramètre.
+                //ses valeurs seront géré dans la méthode GetSqlString
             }
             else
             {
@@ -815,6 +850,7 @@ public abstract class SqlStore<T> : IStore<T>
             Expression.NotStartsWith => " NOT LIKE " + VariablePrefix + parameterName + " " + ConcatCharacter + "'%'",
             Expression.StartsWith => " LIKE " + VariablePrefix + parameterName + " " + ConcatCharacter + " '%'",
             Expression.NotEquals => " != " + VariablePrefix + parameterName,
+            Expression.In => GenerationIn(criteriaParam.Value),
             _ => throw new NotSupportedException(
                 "Type d'expression de filtre non supportée : " + criteriaParam.Expression.ToString()
             ),
@@ -835,5 +871,40 @@ public abstract class SqlStore<T> : IStore<T>
 
         var cmd = GetCommand(commandName, Definition.ContractName!, criteria, queryParameter);
         return CollectionBuilder<T>.ParseCommand(cmd).ToList();
+    }
+
+    /// <summary>
+    /// Génération du contenu des parenthèses de l'expression In.
+    /// </summary>
+    /// <param name="value">Un Object implémentant ICollection</param>
+    /// <returns>La chaîne de caractères correspondante</returns>
+    private static string GenerationIn(object? value)
+    {
+        ICollection? Objects = value as ICollection;
+        if (Objects != null)
+        {
+            if (Objects.Count > 0)
+            {
+                StringBuilder sb = new(" in ( ");
+                bool first = true;
+
+                foreach (object o in Objects)
+                {
+                    Type type = o.GetType();
+
+                    if (!first) sb.Append(" ,");
+                    else first = false;
+
+                    if (type.IsPrimitive || type == typeof(decimal))
+                        sb.Append(o.ToString());
+                    else
+                        sb.Append('\'').Append(o.ToString()).Append('\'');
+                }
+
+                return sb.Append(" )").ToString();
+            }
+            else throw new BrokerException("Requête IN : La collection doit contenir au moins un élément pour générer une requête SQL valide.");
+        }
+        else throw new InvalidCastException("Requête IN : Impossible de récupérer la Collection");
     }
 }

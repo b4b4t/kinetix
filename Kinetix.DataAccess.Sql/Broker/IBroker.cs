@@ -106,6 +106,13 @@ public interface IBroker<T> : IBroker
     ICollection<T> InsertAll(ICollection<T> values);
 
     /// <summary>
+    /// Met à jour l'ensemble des éléments.
+    /// </summary>
+    /// <param name="collection">Valeurs à mettre à jour.</param>
+    /// <returns>Valeurs mises à jour.</returns>
+    ICollection<T> UpdateAll(ICollection<T> collection);
+
+    /// <summary>
     /// Vérifie si l'objet est utilisé.
     /// </summary>
     /// <param name="primaryKey">Clé primaire de l'objet à vérifier.</param>

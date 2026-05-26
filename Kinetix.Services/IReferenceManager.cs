@@ -221,6 +221,13 @@ public interface IReferenceManager
     /// <summary>
     /// Récupère la valeur d'un objet d'une liste de référence.
     /// </summary>
+    /// <param name="type">Le type de la liste de référence.</param>
+    /// <param name="primaryKey">Une clé primaire.</param>
+    string? GetReferenceValue(Type type, object primaryKey);
+
+    /// <summary>
+    /// Récupère la valeur d'un objet d'une liste de référence.
+    /// </summary>
     /// <typeparam name="T">Le type de la liste de référence.</typeparam>
     /// <param name="primaryKey">Une clé primaire.</param>
     /// <param name="ct">CancellationToken.</param>
@@ -246,6 +253,14 @@ public interface IReferenceManager
     /// <param name="ct">CancellationToken.</param>
     /// <returns>Valeur.</returns>
     Task<string?> GetReferenceValueAsync(string referenceName, object? primaryKey, CancellationToken ct = default);
+
+    /// <summary>
+    /// Récupère la valeur d'un objet d'une liste de référence.
+    /// </summary>
+    /// <param name="type">Le type de la liste de référence.</param>
+    /// <param name="primaryKey">Une clé primaire.</param>
+    /// <param name="ct">CancellationToken.</param>
+    Task<string?> GetReferenceValueAsync(Type type, object primaryKey, CancellationToken ct = default);
 
     /// <summary>
     /// Récupère une map clé primaire => valeur pour une liste de référence donnée.

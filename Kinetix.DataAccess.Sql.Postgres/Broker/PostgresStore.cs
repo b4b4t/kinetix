@@ -90,4 +90,15 @@ internal class PostgresStore<T>(string dataSourceName, ConnectionPool connection
         var collectionStore = new PostgresParameterBeanCollection<T>(ConnectionPool, collection, isInsert: true);
         return collectionStore.ExecuteInsert(commandName, DataSourceName);
     }
+
+    /// <inheritdoc />
+    protected override ICollection<T> UpdateAll(string commandName, ICollection<T> collection, BeanDefinition beanDefinition)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(beanDefinition);
+
+        var collectionStore = new PostgresParameterBeanCollection<T>(ConnectionPool, collection, isInsert: false);
+        collectionStore.ExecuteUpdateAll(commandName, DataSourceName);
+        return collection;
+    }
 }
