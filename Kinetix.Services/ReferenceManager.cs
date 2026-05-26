@@ -51,6 +51,15 @@ public class ReferenceManager(IServiceProvider provider, TimeSpan cacheDuration)
         FlushCacheAsync(referenceName, CancellationToken.None).Wait(CancellationToken.None);
     }
 
+    /// <inheritdoc cref="IReferenceManager.FlushAllCache" />
+    public void FlushAllCache()
+    {
+        foreach(string referenceName in ReferenceLists)
+        {
+            FlushCacheAsync(referenceName, CancellationToken.None).Wait(CancellationToken.None);
+        }
+    }
+
     /// <inheritdoc cref="IReferenceManager.FlushCacheAsync{T}(CancellationToken)" />
     public Task FlushCacheAsync<T>(CancellationToken ct = default)
         where T : notnull
@@ -66,6 +75,15 @@ public class ReferenceManager(IServiceProvider provider, TimeSpan cacheDuration)
         if (_referenceNotifier != null)
         {
             await _referenceNotifier.NotifyFlushAsync(referenceName, ct);
+        }
+    }
+
+    /// <inheritdoc cref="IReferenceManager.FlushAllCacheAsync(CancellationToken)" />
+    public async Task FlushAllCacheAsync(CancellationToken ct = default)
+    {
+        foreach (string referenceName in ReferenceLists)
+        {
+            await FlushCacheAsync(referenceName, ct);
         }
     }
 

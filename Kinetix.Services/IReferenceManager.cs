@@ -34,6 +34,11 @@ public interface IReferenceManager
     void FlushCache(string referenceName);
 
     /// <summary>
+    /// Vide tous les caches de référence.
+    /// </summary>
+    void FlushAllCache();
+
+    /// <summary>
     /// Vide le cache de référence.
     /// </summary>
     /// <param name="ct">CancellationToken.</param>
@@ -49,6 +54,12 @@ public interface IReferenceManager
     /// <param name="ct">CancellationToken.</param>
     /// <returns>Task.</returns>
     Task FlushCacheAsync(string referenceName, CancellationToken ct = default);
+
+    /// <summary>
+    /// Vide tous les caches de référence.
+    /// </summary>
+    /// <param name="ct">CancellationToken.</param>
+    Task FlushAllCacheAsync(CancellationToken ct = default);
 
     /// <summary>
     /// Récupère une liste de référence.
