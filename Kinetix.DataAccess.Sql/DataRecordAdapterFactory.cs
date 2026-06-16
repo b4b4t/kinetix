@@ -221,7 +221,7 @@ internal class DataRecordAdapterFactory
             dic.Add(property.PropertyName.ToLowerInvariant(), prop);
             if (property.MemberName != null)
             {
-                dic.Add(property.MemberName.ToLowerInvariant(), prop);
+                dic.TryAdd(property.MemberName.ToLowerInvariant(), prop);
             }
         }
 
