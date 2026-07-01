@@ -54,7 +54,7 @@ public abstract class ConnectionPool(TransactionScopeManager transactionScopeMan
     /// </summary>
     /// <param name="datasourceName">Nom de la datasource.</param>
     /// <returns>La connection.</returns>
-    protected DbConnection GetConnection(string datasourceName)
+    public DbConnection GetConnection(string datasourceName)
     {
         var transactionContext =
             (transactionScopeManager.ActiveScope?.GetContext<SqlTransactionContext>())
