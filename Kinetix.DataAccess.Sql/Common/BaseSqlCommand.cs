@@ -91,6 +91,8 @@ public abstract class BaseSqlCommand : IDisposable
         Connection = connection;
         InnerCommand = Connection.CreateCommand();
         InnerCommand.CommandText = commandText;
+
+        _parserKey = commandName;
     }
 
     /// <summary>
@@ -113,6 +115,8 @@ public abstract class BaseSqlCommand : IDisposable
         InnerCommand = Connection.CreateCommand();
         InnerCommand.CommandType = commandType;
         InnerCommand.Connection = Connection;
+
+        _parserKey = commandName;
     }
 
     /// <summary>
