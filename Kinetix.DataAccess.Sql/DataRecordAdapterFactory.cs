@@ -20,18 +20,30 @@ internal class DataRecordAdapterFactory
     private readonly ModuleBuilder _dynamicModule;
     private readonly MethodInfo _readBooleanMethodInfo;
     private readonly MethodInfo _readByteMethodInfo;
+    private readonly MethodInfo _readNonNullableByteMethodInfo;
     private readonly MethodInfo _readCharMethodInfo;
+    private readonly MethodInfo _readNonNullableCharMethodInfo;
     private readonly MethodInfo _readDateTimeMethodInfo;
+    private readonly MethodInfo _readNonNullableDateTimeMethodInfo;
     private readonly MethodInfo _readDecimalMethodInfo;
+    private readonly MethodInfo _readNonNullableDecimalMethodInfo;
     private readonly MethodInfo _readDoubleMethodInfo;
+    private readonly MethodInfo _readNonNullableDoubleMethodInfo;
     private readonly MethodInfo _readFloatMethodInfo;
+    private readonly MethodInfo _readNonNullableFloatMethodInfo;
     private readonly MethodInfo _readGuidMethodInfo;
+    private readonly MethodInfo _readNonNullableGuidMethodInfo;
     private readonly MethodInfo _readIntMethodInfo;
+    private readonly MethodInfo _readNonNullableIntMethodInfo;
     private readonly MethodInfo _readLongMethodInfo;
+    private readonly MethodInfo _readNonNullableLongMethodInfo;
     private readonly MethodInfo _readNonNullableBooleanMethodIndo;
     private readonly MethodInfo _readObjectMethodInfo;
     private readonly MethodInfo _readShortMethodInfo;
+    private readonly MethodInfo _readNonNullableShortMethodInfo;
     private readonly MethodInfo _readStringMethodInfo;
+    private readonly MethodInfo _readTimeSpanMethodInfo;
+    private readonly MethodInfo _readNonNullableTimeSpanMethodInfo;
 
     private int _adapterNum = 0;
 
@@ -65,8 +77,22 @@ internal class DataRecordAdapterFactory
             _abstractReadMethodParams,
             modifiers: null
         )!;
+        _readNonNullableByteMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableByte),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
         _readDateTimeMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
             nameof(AbstractDataReaderAdapter.ReadDateTime),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readNonNullableDateTimeMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableDateTime),
             BindingFlags.Static | BindingFlags.Public,
             binder: null,
             _abstractReadMethodParams,
@@ -79,8 +105,22 @@ internal class DataRecordAdapterFactory
             _abstractReadMethodParams,
             modifiers: null
         )!;
+        _readNonNullableDecimalMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableDecimal),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
         _readIntMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
             nameof(AbstractDataReaderAdapter.ReadInt),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readNonNullableIntMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableInt),
             BindingFlags.Static | BindingFlags.Public,
             binder: null,
             _abstractReadMethodParams,
@@ -93,8 +133,22 @@ internal class DataRecordAdapterFactory
             _abstractReadMethodParams,
             modifiers: null
         )!;
+        _readNonNullableShortMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableShort),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
         _readLongMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
             nameof(AbstractDataReaderAdapter.ReadLong),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readNonNullableLongMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableLong),
             BindingFlags.Static | BindingFlags.Public,
             binder: null,
             _abstractReadMethodParams,
@@ -107,9 +161,23 @@ internal class DataRecordAdapterFactory
             _abstractReadMethodParams,
             modifiers: null
         )!;
+        _readNonNullableFloatMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableFloat),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
         _readDoubleMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
             nameof(AbstractDataReaderAdapter.ReadDouble),
-            BindingFlags.Static | BindingFlags.NonPublic,
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readNonNullableDoubleMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableDouble),
+            BindingFlags.Static | BindingFlags.Public,
             binder: null,
             _abstractReadMethodParams,
             modifiers: null
@@ -128,8 +196,36 @@ internal class DataRecordAdapterFactory
             _abstractReadMethodParams,
             modifiers: null
         )!;
+        _readNonNullableCharMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableChar),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
         _readGuidMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
             nameof(AbstractDataReaderAdapter.ReadGuid),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readNonNullableGuidMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableGuid),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readTimeSpanMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadTimeSpan),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readNonNullableTimeSpanMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableTimeSpan),
             BindingFlags.Static | BindingFlags.Public,
             binder: null,
             _abstractReadMethodParams,
@@ -334,17 +430,25 @@ internal class DataRecordAdapterFactory
         {
             return _readDecimalMethodInfo;
         }
+        else if (type == typeof(decimal))
+        {
+            return _readNonNullableDecimalMethodInfo;
+        }
         else if (type == typeof(DateTime?))
         {
             return _readDateTimeMethodInfo;
         }
         else if (type == typeof(DateTime))
         {
-            return _readDateTimeMethodInfo;
+            return _readNonNullableDateTimeMethodInfo;
         }
         else if (type == typeof(short?))
         {
             return _readShortMethodInfo;
+        }
+        else if (type == typeof(short))
+        {
+            return _readNonNullableShortMethodInfo;
         }
         else if (type == typeof(bool?))
         {
@@ -358,29 +462,61 @@ internal class DataRecordAdapterFactory
         {
             return _readByteMethodInfo;
         }
+        else if (type == typeof(byte))
+        {
+            return _readNonNullableByteMethodInfo;
+        }
         else if (type == typeof(int))
         {
-            return _readIntMethodInfo;
+            return _readNonNullableIntMethodInfo;
         }
         else if (type == typeof(long?))
         {
             return _readLongMethodInfo;
         }
+        else if (type == typeof(long))
+        {
+            return _readNonNullableLongMethodInfo;
+        }
         else if (type == typeof(float?))
         {
             return _readFloatMethodInfo;
+        }
+        else if (type == typeof(float))
+        {
+            return _readNonNullableFloatMethodInfo;
         }
         else if (type == typeof(double?))
         {
             return _readDoubleMethodInfo;
         }
+        else if (type == typeof(double))
+        {
+            return _readNonNullableDoubleMethodInfo;
+        }
         else if (type == typeof(char?))
         {
             return _readCharMethodInfo;
         }
+        else if (type == typeof(char))
+        {
+            return _readNonNullableCharMethodInfo;
+        }
         else if (type == typeof(Guid?))
         {
             return _readGuidMethodInfo;
+        }
+        else if (type == typeof(Guid))
+        {
+            return _readNonNullableGuidMethodInfo;
+        }
+        else if (type == typeof(TimeSpan?))
+        {
+            return _readTimeSpanMethodInfo;
+        }
+        else if (type == typeof(TimeSpan))
+        {
+            return _readNonNullableTimeSpanMethodInfo;
         }
         else
         {

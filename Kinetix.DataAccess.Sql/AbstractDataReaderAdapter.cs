@@ -80,6 +80,24 @@ public abstract class AbstractDataReaderAdapter
     }
 
     /// <summary>
+    /// Retourne un TimeSpan.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>TimeSpan.</returns>
+    public static TimeSpan? ReadTimeSpan(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            return null;
+        }
+
+        return (TimeSpan?)record.GetValue(idx);
+    }
+
+    /// <summary>
     /// Retourne un decimal.
     /// </summary>
     /// <param name="record">Record.</param>
@@ -203,6 +221,204 @@ public abstract class AbstractDataReaderAdapter
         }
 
         return record.GetBoolean(idx);
+    }
+
+    /// <summary>
+    /// Retourne un Byte non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Byte.</returns>
+    public static byte ReadNonNullableByte(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetByte(idx);
+    }
+
+    /// <summary>
+    /// Retourne un char non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Char.</returns>
+    public static char ReadNonNullableChar(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetChar(idx);
+    }
+
+    /// <summary>
+    /// Retourne un DateTime non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>DateTime.</returns>
+    public static DateTime ReadNonNullableDateTime(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetDateTime(idx);
+    }
+
+    /// <summary>
+    /// Retourne un decimal non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Decimal.</returns>
+    public static decimal ReadNonNullableDecimal(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetDecimal(idx);
+    }
+
+    /// <summary>
+    /// Retourne un double non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Double.</returns>
+    public static double ReadNonNullableDouble(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetDouble(idx);
+    }
+
+    /// <summary>
+    /// Retourne un float non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Float.</returns>
+    public static float ReadNonNullableFloat(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetFloat(idx);
+    }
+
+    /// <summary>
+    /// Retourne un guid non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Guid.</returns>
+    public static Guid ReadNonNullableGuid(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetGuid(idx);
+    }
+
+    /// <summary>
+    /// Retourne un int32 non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Entier.</returns>
+    public static int ReadNonNullableInt(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetInt32(idx);
+    }
+
+    /// <summary>
+    /// Retourne un long non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Long.</returns>
+    public static long ReadNonNullableLong(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetInt64(idx);
+    }
+
+    /// <summary>
+    /// Retourne un short non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Short.</returns>
+    public static short ReadNonNullableShort(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return record.GetInt16(idx);
+    }
+
+    /// <summary>
+    /// Retourne un TimeSpan non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>TimeSpan.</returns>
+    public static TimeSpan ReadNonNullableTimeSpan(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return (TimeSpan)record.GetValue(idx);
     }
 
     /// <summary>
