@@ -506,11 +506,6 @@ public abstract class SqlStore<T> : IStore<T>
                 continue;
             }
 
-            if (property.PropertyType == typeof(byte[]))
-            {
-                continue;
-            }
-
             if (hasColumn)
             {
                 commandText.Append(", ");

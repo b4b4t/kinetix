@@ -44,6 +44,8 @@ internal class DataRecordAdapterFactory
     private readonly MethodInfo _readStringMethodInfo;
     private readonly MethodInfo _readTimeSpanMethodInfo;
     private readonly MethodInfo _readNonNullableTimeSpanMethodInfo;
+    private readonly MethodInfo _readNonNullableByteArrayMethodInfo;
+    private readonly MethodInfo _readByteArrayMethodInfo;
 
     private int _adapterNum = 0;
 
@@ -233,6 +235,20 @@ internal class DataRecordAdapterFactory
         )!;
         _readObjectMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
             nameof(AbstractDataReaderAdapter.ReadObject),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readByteArrayMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadByteArray),
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            _abstractReadMethodParams,
+            modifiers: null
+        )!;
+        _readNonNullableByteArrayMethodInfo = typeof(AbstractDataReaderAdapter).GetMethod(
+            nameof(AbstractDataReaderAdapter.ReadNonNullableArray),
             BindingFlags.Static | BindingFlags.Public,
             binder: null,
             _abstractReadMethodParams,
@@ -517,6 +533,14 @@ internal class DataRecordAdapterFactory
         else if (type == typeof(TimeSpan))
         {
             return _readNonNullableTimeSpanMethodInfo;
+        }
+        else if (type == typeof(byte[]))
+        {
+            return _readNonNullableByteArrayMethodInfo;
+        }
+        else if (type == typeof(byte?[]))
+        {
+            return _readByteArrayMethodInfo;
         }
         else
         {

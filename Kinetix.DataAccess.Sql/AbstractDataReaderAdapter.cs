@@ -475,4 +475,40 @@ public abstract class AbstractDataReaderAdapter
 
         return record.GetString(idx);
     }
+
+    /// <summary>
+    /// Retourne un byte[] non nullable.
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Byte[].</returns>
+    public static byte[] ReadNonNullableArray(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+
+        if (record.IsDBNull(idx))
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+
+        return (byte[])record.GetValue(idx);
+    }
+
+    /// <summary>
+    /// Retourne un byte[].
+    /// </summary>
+    /// <param name="record">Record.</param>
+    /// <param name="idx">Index.</param>
+    /// <returns>Byte[].</returns>
+    public static byte[]? ReadByteArray(IDataRecord record, int idx)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+        
+        if (record.IsDBNull(idx))
+        {
+            return null;
+        }
+        
+        return (byte[])record.GetValue(idx);
+    }
 }
