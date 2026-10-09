@@ -91,6 +91,22 @@ public interface IBroker<T> : IBroker
     T? GetByCriteria(T criteria);
 
     /// <summary>
+    /// Récupération d'un objet à partir de critère de recherche.
+    /// </summary>
+    /// <param name="criteria">Le critère de recherche.</param>
+    /// <param name="nullIfEmpty">
+    /// Si vrai, retourne NULL dans le cas où aucune ligne n'est sélectionnée. 
+    /// Sinon, produit une erreur. 
+    /// Par défaut : produit une erreur si aucune ligne n'est sélectionnée.
+    /// </param>
+    /// <param name="retreiveBlobColumns">
+    /// Permet d'autoriser ou non la sélection des champs BLOB. 
+    /// Par défaut : ne revoie pas les champs BLOB.
+    /// </param>
+    /// <returns>Objet.</returns>
+    T? GetByCriteria(FilterCriteria criteria, bool nullIfEmpty, bool retreiveBlobColumns);
+
+    /// <summary>
     /// Insère un élément.
     /// </summary>
     /// <param name="bean">Bean à enregistrer.</param>

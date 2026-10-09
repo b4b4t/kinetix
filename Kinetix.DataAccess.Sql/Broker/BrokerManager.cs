@@ -13,6 +13,13 @@ namespace Kinetix.DataAccess.Sql.Broker;
 /// <param name="transactionScopeManager">Composant injecté.</param>
 public abstract class BrokerManager(ConnectionPool connectionPool, TransactionScopeManager transactionScopeManager)
 {
+    /// <summary>
+    /// Paramètre permettant de ne pas définir de limite
+    /// aux nombres de résultats ramenées par une requête
+    /// du Broker.
+    /// </summary>
+    public const int NoLimit = -1;
+
     private readonly Dictionary<string, IBroker> _brokerMap = [];
 
     /// <summary>

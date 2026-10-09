@@ -195,6 +195,63 @@ public abstract class SqlStore<T> : IStore<T>
     }
 
     /// <summary>
+    /// Execute une commande et retourne un reader.
+    /// </summary>
+    /// <param name="commandName">Nom de la commande.</param>
+    /// <param name="tableName">Nom de la table.</param>
+    /// <param name="criteria">Critère de recherche.</param>
+    /// <param name="sortOrder">Ordre de tri.</param>
+    /// <param name="maxRows">Nombre maximum d'enregistrements (BrokerManager.NoLimit = pas de limite).</param>
+    /// <param name="retreiveBlobColumns">Permet d'autoriser la sélection des colonnes BLOB ou pas.</param>
+    /// <returns>DataReader contenant le résultat de la commande.</returns>
+    public BaseSqlCommand GetCommand(string commandName, string tableName,
+        FilterCriteria criteria, string? sortOrder, int maxRows, bool retreiveBlobColumns)
+    {
+        var command = ConnectionPool.GetSqlCommand(DataSourceName, commandName, CommandType.Text);
+
+        StringBuilder commandText = new("select ");
+        if (maxRows != BrokerManager.NoLimit)
+        {
+            commandText.Append("top(@top) ");
+            command.Parameters.AddWithValue("top", maxRows);
+        }
+        BeanPropertyDescriptorCollection properties = BeanDescriptor.GetDefinition(typeof(T)).Properties;
+        bool hasColumn = false;
+        foreach (BeanPropertyDescriptor property in properties)
+        {
+            if (string.IsNullOrEmpty(property.MemberName))
+            {
+                continue;
+            }
+            if (!retreiveBlobColumns && property.PropertyType == typeof(byte[]))
+            {
+                continue;
+            }
+            if (hasColumn)
+            {
+                commandText.Append(", ");
+            }
+            commandText.Append(property.MemberName);
+            hasColumn = true;
+        }
+        commandText.Append(" from ").Append(tableName);
+
+        PrepareFilterCriteria(criteria, command, commandText);
+
+        // Ajout du Order By si non-nul
+        if (sortOrder != null)
+        {
+            commandText.Append(" order by ");
+            commandText.Append(sortOrder);
+        }
+
+        // Set de la requête
+        command.CommandText = commandText.ToString();
+
+        return command;
+    }
+
+    /// <summary>
     /// Checks if the object is used by another object in the application.
     /// </summary>
     /// <param name="primaryKey">Id of the object.</param>
@@ -265,6 +322,29 @@ public abstract class SqlStore<T> : IStore<T>
         var commandName = ServiceSelect + "_LIKE_" + Definition.ContractName;
         var cmd = GetCommand(commandName, Definition.ContractName!, criteria, queryParameter: null);
         return CollectionBuilder<T>.ParseCommandForSingleObject(cmd);
+    }
+
+    /// <summary>
+    /// Récupération d'un objet à partir de critère de recherche.
+    /// </summary>
+    /// <param name="criteria">Le critère de recherche.</param>
+    /// <param name="NullIfEmpty">
+    /// Si vrai, retourne NULL dans le cas où aucune ligne n'est sélectionnée. 
+    /// Sinon, produit une erreur. 
+    /// Par défaut : produit une erreur si aucune ligne n'est sélectionnée.
+    /// </param>
+    /// <param name="retreiveBlobColumns">
+    /// Permet d'autoriser ou non la sélection des champs BLOB. 
+    /// Par défaut : ne revoie pas les champs BLOB.
+    /// </param>
+    /// <returns>Objet.</returns>
+    public T? LoadByCriteria(FilterCriteria criteria, bool NullIfEmpty, bool retreiveBlobColumns)
+    {
+        ArgumentNullException.ThrowIfNull(criteria);
+
+        string commandName = ServiceSelect + "_LIKE_" + Definition.ContractName;
+        BaseSqlCommand cmd = this.GetCommand(commandName, Definition.ContractName!, criteria, null!, BrokerManager.NoLimit, retreiveBlobColumns);
+        return CollectionBuilder<T>.ParseCommandForSingleObject(cmd, NullIfEmpty);
     }
 
     /// <summary>

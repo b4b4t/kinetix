@@ -54,6 +54,22 @@ public interface IStore<T>
     T? LoadByCriteria(FilterCriteria criteria);
 
     /// <summary>
+    /// Récupération d'un objet à partir de critère de recherche.
+    /// </summary>
+    /// <param name="criteria">Le critère de recherche.</param>
+    /// <param name="NullIfEmpty">
+    /// Si vrai, retourne NULL dans le cas où aucune ligne n'est sélectionnée. 
+    /// Sinon, produit une erreur. 
+    /// Par défaut : produit une erreur si aucune ligne n'est sélectionnée.
+    /// </param>
+    /// <param name="retreiveBlobColumns">
+    /// Permet d'autoriser ou non la sélection des champs BLOB. 
+    /// Par défaut : ne revoie pas les champs BLOB.
+    /// </param>
+    /// <returns>Objet.</returns>
+    T? LoadByCriteria(FilterCriteria criteria, bool NullIfEmpty, bool retreiveBlobColumns);
+
+    /// <summary>
     /// Dépose un bean dans le store.
     /// </summary>
     /// <param name="bean">Bean à enregistrer.</param>
